@@ -32,7 +32,6 @@ fn init() {
   egui_i18n::load_translations_from_text("zh_CN", zh_cn).unwrap();
   egui_i18n::load_translations_from_text("ja_JP", ja_jp).unwrap();
 
-  // 设置初始语言
   egui_i18n::set_language("en_US");
   egui_i18n::set_fallback("en_US");
 }
