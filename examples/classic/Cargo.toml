@@ -9,7 +9,7 @@ publish = false
 [dependencies]
 eframe = "0.29"
 
-egui-i18n = { workspace = true, features = ["classic"]}
+egui-i18n = { workspace = true }
 
 # For image support:
 egui_extras = { version = "0.29", features = ["default", "image"] }
