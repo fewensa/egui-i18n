@@ -1,0 +1,27 @@
+[package]
+name = "egui-i18n"
+version.workspace = true
+authors = ["fewensa <osuni@protonmail.com>"]
+description = "egui i18n"
+edition.workspace = true
+homepage = "https://github.com/fewensa/egui-i18n"
+license.workspace = true
+readme = "README.md"
+repository = "https://github.com/fewensa/egui-i18n"
+categories = ["gui"]
+keywords = ["gui", "immediate", "portable"]
+include = ["../LICENSE", "**/*.rs", "Cargo.toml"]
+
+[features]
+default = ["classic"]
+classic = []
+fluent = ["dep:fluent", "unic-langid", "intl-memoizer"]
+
+[dependencies]
+once_cell = { workspace = true }
+log = { workspace = true }
+
+fluent = { workspace = true, optional = true }
+unic-langid = { workspace = true, optional = true}
+intl-memoizer = { workspace = true, optional = true}
+
