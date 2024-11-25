@@ -73,6 +73,7 @@ impl eframe::App for MyApp {
       ui.label(format!("Fallback language: {}", egui_i18n::get_fallback()));
       ui.label(format!("Hello '{}', age {}", self.name, self.age));
       ui.label(tr!("Hello=, {name}!", {name: &self.name}));
+      ui.label(tr!("hello-name", {name: &self.name}));
       ui.label(egui_i18n::tr!("My name is {name} and {age} years old", {
         name: &self.name, age: self.age
       }));
