@@ -1,8 +1,7 @@
-use std::collections::HashMap;
 use std::env::current_dir;
-use std::fs::{self, exists, OpenOptions};
+use std::fs::{self, OpenOptions};
 use std::io::Write;
-use std::path::{Path, PathBuf};
+use std::path::Path;
 use syn::visit::Visit;
 
 use crate::types::GenerateOpts;
@@ -48,7 +47,7 @@ impl Generator {
       }
       let allow = if let Some(ext) = path.extension() {
         let ext = ext.to_string_lossy().to_string().to_lowercase();
-        extensions.iter().find(|item| item.to_lowercase() == ext).is_some()
+        extensions.iter().any(|item| item.to_lowercase() == ext)
       } else {
         false
       };
@@ -61,8 +60,8 @@ impl Generator {
   }
 
   fn visit_file(&self, file: &Path, visitor: &mut TranslationVisitor) {
-    let content = fs::read_to_string(file).expect(&format!("Failed to read file: {:?}", file));
-    let syntax = syn::parse_file(&content).expect(&format!("Failed to parse file: {:?}", file));
+    let content = fs::read_to_string(file).unwrap_or_else(|_| panic!("Failed to read file: {:?}", file));
+    let syntax = syn::parse_file(&content).unwrap_or_else(|_| panic!("Failed to parse file: {:?}", file));
     visitor.visit_file(&syntax);
   }
 }
@@ -88,11 +87,11 @@ impl Generator {
       None => "tgl",
     };
     for language in &languages {
-      let language_path = output_path.join(&format!("{}.{}", language, ext));
+      let language_path = output_path.join(format!("{}.{}", language, ext));
       let mut stored_translations = if language_path.exists() {
         let content = fs::read_to_string(&language_path)?;
         let t = egui_i18n::parse_translations(content, false);
-        t.keys().map(|item| item.clone()).collect()
+        t.keys().cloned().collect()
       } else {
         vec![]
       };
@@ -170,9 +169,9 @@ impl<'ast> Visit<'ast> for TranslationVisitor {
 }
 
 fn extract_first_string_literal(tokens: &proc_macro2::TokenStream) -> Option<String> {
-  let mut iter = tokens.clone().into_iter();
+  let iter = tokens.clone().into_iter();
 
-  while let Some(token) = iter.next() {
+  for token in iter {
     if let proc_macro2::TokenTree::Literal(literal) = token {
       if let Ok(syn::Lit::Str(lit_str)) = syn::parse_str::<syn::Lit>(&literal.to_string()) {
         return Some(lit_str.value());
