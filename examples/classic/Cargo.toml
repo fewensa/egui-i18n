@@ -1,0 +1,19 @@
+[package]
+name = "egui-i18n-example-classic"
+version.workspace = true
+authors = ["fewensa <osuni@protonmail.com>"]
+license = "MIT"
+edition.workspace = true
+publish = false
+
+[dependencies]
+eframe = "0.29"
+
+egui-i18n = { workspace = true, features = ["classic"]}
+
+# For image support:
+egui_extras = { version = "0.29", features = ["default", "image"] }
+env_logger = { version = "0.10", default-features = false, features = [
+    "auto-color",
+    "humantime",
+] }

@@ -1,0 +1,35 @@
+[workspace]
+resolver = "2"
+members = ["cli", "i18n", "examples/*"]
+
+[workspace.package]
+edition = "2021"
+license = "MIT"
+rust-version = "1.77"
+version = "0.1.0"
+
+[profile.release]
+# lto = true # VERY slightly smaller wasm
+# opt-level = 's' # 10-20% smaller wasm compared to `opt-level = 3`
+# opt-level = 1 # very slow and big wasm. Don't do this.
+opt-level = 2 # fast and small wasm, basically same as `opt-level = 's'`
+# opt-level = 3 # unnecessarily large wasm for no performance gain
+
+# debug = true # include debug symbols, useful when profiling wasm
+
+panic = "abort" # This leads to better optimizations and smaller binaries (and is the default in Wasm anyways).
+
+[workspace.dependencies]
+
+egui-i18n = { path = "./i18n" }
+egui-i18n-macros = { path = "./i18n-macros" }
+
+fluent = "0.16"
+unic-langid = "0.9"
+intl-memoizer = "0.5"
+
+proc-macro2 = "1"
+quote = "1"
+syn = { version = "2", features = ["derive", "parsing", "visit", "full"] }
+once_cell = "1"
+log = "0.4"
