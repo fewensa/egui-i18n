@@ -1,0 +1,33 @@
+name: 'Check'
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+
+  check:
+    name: Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Rust
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          toolchain: stable
+
+      - name: Test deps
+        run: |
+          rustc --version
+          cargo --version
+
+      - name: Lint
+        run: cargo clippy --release --all -- -D warnings
+
+      - name: Run tests
+        run: cargo test --release
