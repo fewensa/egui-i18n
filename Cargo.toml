@@ -22,7 +22,6 @@ panic = "abort" # This leads to better optimizations and smaller binaries (and i
 [workspace.dependencies]
 
 egui-i18n = { path = "./i18n" }
-egui-i18n-macros = { path = "./i18n-macros" }
 
 fluent = "0.16"
 unic-langid = "0.9"
