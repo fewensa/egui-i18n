@@ -159,6 +159,6 @@ macro_rules! tr {
     $crate::translate_fluent($key, &args)
   }};
   ($key:expr) => {{
-    $crate::translate_fluent($key, &fluent::FluentArgs::new())
+    $crate::translate_fluent($key, &$crate::fluent::FluentArgs::new())
   }};
 }
