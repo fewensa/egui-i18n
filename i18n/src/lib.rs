@@ -149,7 +149,7 @@ macro_rules! tr {
 #[macro_export]
 macro_rules! tr {
   ($key:expr, {$($name:ident: $val:expr),*}) => {{
-    let mut args = $crate::FluentArgs::new();
+    let mut args = ::egui_i18n::FluentArgs::new();
     $(
         args.set(stringify!($name), $val);
     )*
