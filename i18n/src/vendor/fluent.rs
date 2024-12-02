@@ -1,4 +1,4 @@
-pub use fluent::FluentArgs;
+use fluent::FluentArgs;
 use intl_memoizer::concurrent::IntlLangMemoizer;
 use once_cell::sync::Lazy;
 use std::sync::RwLock;

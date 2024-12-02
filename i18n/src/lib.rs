@@ -6,8 +6,11 @@ use std::sync::RwLock;
 
 #[cfg(feature = "classic")]
 pub use self::vendor::classic::parse_translations;
+
 #[cfg(feature = "fluent")]
-pub use self::vendor::fluent::FluentArgs;
+pub mod fluent {
+  pub use fluent::FluentArgs;
+}
 
 mod vendor;
 
@@ -124,7 +127,7 @@ pub fn translate_classic(key: &str, args: &HashMap<&str, String>) -> String {
 }
 
 #[cfg(feature = "fluent")]
-pub fn translate_fluent(key: &str, args: &vendor::fluent::FluentArgs) -> String {
+pub fn translate_fluent(key: &str, args: &crate::fluent::FluentArgs) -> String {
   let language = get_language();
   let fallback = get_fallback();
   vendor::fluent::translate(language, fallback, key, args)
@@ -149,7 +152,7 @@ macro_rules! tr {
 #[macro_export]
 macro_rules! tr {
   ($key:expr, {$($name:ident: $val:expr),*}) => {{
-    let mut args = ::egui_i18n::FluentArgs::new();
+    let mut args = $crate::fluent::FluentArgs::new();
     $(
         args.set(stringify!($name), $val);
     )*
