@@ -120,5 +120,5 @@ fn extract_translate(language: impl AsRef<str>, key: &str, args: &HashMap<&str, 
 
 pub fn languages() -> Vec<String> {
   let translations = TRANSLATIONS.read().unwrap();
-  translations.keys().cloned().map(String::from).collect()
+  translations.keys().cloned().collect()
 }
