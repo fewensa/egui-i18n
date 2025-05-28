@@ -10,6 +10,9 @@ pub use self::vendor::classic::parse_translations;
 #[cfg(feature = "fluent")]
 pub use fluent;
 
+#[cfg(feature = "fluent")]
+pub use fluent_bundle;
+
 mod vendor;
 
 // todo: migrate to egui context

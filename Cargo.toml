@@ -24,6 +24,8 @@ panic = "abort" # This leads to better optimizations and smaller binaries (and i
 egui-i18n = { path = "./i18n" }
 
 fluent = "0.17"
+fluent-bundle = "0.16.0"
+
 unic-langid = "0.9"
 intl-memoizer = "0.5"
 
