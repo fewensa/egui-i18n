@@ -1,19 +1,24 @@
 [package]
 name = "egui-i18n-example-fluent"
 version.workspace = true
-authors = ["fewensa <osuni@protonmail.com>"]
-license = "MIT"
+authors.workspace = true
+description.workspace = true
 edition.workspace = true
+homepage.workspace = true
+license.workspace = true
+readme.workspace = true
+repository.workspace = true
+include.workspace = true
 publish = false
 
 [dependencies]
-eframe = "0.31.0"
+eframe = "0.31"
 
 egui-i18n = { workspace = true, features = ["fluent"] }
 
 # For image support:
-egui_extras = { version = "0.31.0", features = ["default", "image"] }
-env_logger = { version = "0.11.6", default-features = false, features = [
+egui_extras = { version = "0.31", features = ["default", "image"] }
+env_logger = { version = "0.11", default-features = false, features = [
     "auto-color",
     "humantime",
 ] }

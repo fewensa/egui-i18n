@@ -7,6 +7,12 @@ edition = "2021"
 license = "MIT"
 rust-version = "1.77"
 version = "0.1.0"
+authors = ["fewensa <osuni@protonmail.com>"]
+description = "egui i18n"
+readme = "README.md"
+repository = "https://github.com/fewensa/egui-i18n"
+homepage = "https://github.com/fewensa/egui-i18n"
+include = ["../LICENSE", "**/*.rs", "Cargo.toml"]
 
 [profile.release]
 # lto = true # VERY slightly smaller wasm
@@ -21,16 +27,21 @@ panic = "abort" # This leads to better optimizations and smaller binaries (and i
 
 [workspace.dependencies]
 
-egui-i18n = { path = "./i18n" }
-
-fluent = "0.17"
-fluent-bundle = "0.16"
-
-unic-langid = "0.9"
-intl-memoizer = "0.5"
+color-eyre = "0.6"
+structopt =  "0.3"
+paw = "1"
 
 proc-macro2 = "1"
 quote = "1"
 syn = { version = "2", features = ["derive", "parsing", "visit", "full"] }
 once_cell = "1"
 log = "0.4"
+
+
+fluent = "0.17"
+fluent-bundle = "0.16"
+unic-langid = "0.9"
+intl-memoizer = "0.5"
+
+
+egui-i18n = { path = "./i18n" }

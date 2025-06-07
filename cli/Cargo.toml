@@ -1,24 +1,24 @@
 [package]
 name = "egui-i18n-cli"
 version.workspace = true
-authors = ["fewensa <osuni@protonmail.com>"]
-description = "egui i18n"
+authors.workspace = true
+description.workspace = true
 edition.workspace = true
-homepage = "https://github.com/fewensa/egui-i18n"
+homepage.workspace = true
 license.workspace = true
-readme = "README.md"
-repository = "https://github.com/fewensa/egui-i18n"
+readme.workspace = true
+repository.workspace = true
+include.workspace = true
 categories = ["gui"]
 keywords = ["gui", "immediate", "portable"]
-include = ["../LICENSE", "**/*.rs", "Cargo.toml"]
+publish = false
 
 [dependencies]
-color-eyre = "0.6"
-structopt = { version = "0.3", features = [ "paw" ] }
-paw = "1"
+color-eyre = { workspace = true }
+structopt = { workspace = true, features = ["paw"] }
+paw = { workspace = true }
 
 egui-i18n = { workspace = true }
 syn = { workspace = true }
 quote = { workspace = true }
 proc-macro2 = { workspace = true }
-
