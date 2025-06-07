@@ -6,11 +6,12 @@ description.workspace = true
 edition.workspace = true
 homepage.workspace = true
 license.workspace = true
-readme.workspace = true
 repository.workspace = true
 include.workspace = true
 categories = ["gui"]
 keywords = ["gui", "immediate", "portable"]
+
+readme = "README.md"
 
 [features]
 default = ["classic"]
