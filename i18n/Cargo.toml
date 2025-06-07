@@ -7,11 +7,11 @@ edition.workspace = true
 homepage.workspace = true
 license.workspace = true
 repository.workspace = true
-include.workspace = true
 categories = ["gui"]
 keywords = ["gui", "immediate", "portable"]
 
 readme = "README.md"
+include = ["**/*.rs", "Cargo.toml", "README.md", "LICENSE"]
 
 [features]
 default = ["classic"]
