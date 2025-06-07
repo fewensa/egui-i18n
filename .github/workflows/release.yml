@@ -77,9 +77,11 @@ jobs:
           toolchain: stable
 
       - name: Package
+        working-directory: i18n
         run: cargo package
 
       - name: Publish crate
+        working-directory: i18n
         run: cargo publish --token ${{ secrets.TOKEN_CRATES_IO }}
 
   publish-github-release:
