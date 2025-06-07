@@ -49,19 +49,19 @@ jobs:
 
       - name: Collect artifacts
         run: |
-          mkdir dist/${{ matrix.package.target }}
+          mkdir dist
           FILE_SUFFIX=''
           if [[ "${{ matrix.package.target }}" == "x86_64-pc-windows-gnu" ]]; then
             FILE_SUFFIX='.exe'
           fi
           cp target/${{ matrix.package.target }}/release/egui-i18n-cli${FILE_SUFFIX} dist/egui-i18n-cli-${{ matrix.package.slug }}${FILE_SUFFIX}
-          cp target/${{ matrix.package.target }}/release/egui-i18n-example-classic${FILE_SUFFIX} dist/egui-i18n-example-classic-${{ matrix.package.slug }}${FILE_SUFFIX}
-          cp target/${{ matrix.package.target }}/release/egui-i18n-example-fluent${FILE_SUFFIX} dist/egui-i18n-example-fluent-${{ matrix.package.slug }}${FILE_SUFFIX}
+          cp target/${{ matrix.package.target }}/release/egui-i18n-example-classic${FILE_SUFFIX} dist/example-classic-${{ matrix.package.slug }}${FILE_SUFFIX}
+          cp target/${{ matrix.package.target }}/release/egui-i18n-example-fluent${FILE_SUFFIX} dist/example-fluent-${{ matrix.package.slug }}${FILE_SUFFIX}
 
       - uses: actions/upload-artifact@v4
         with:
           name: artifact-${{ matrix.package.target }}
-          path: dist/${{ matrix.package.target }}
+          path: dist
           overwrite: true
 
   publish-crate:
