@@ -18,16 +18,16 @@ jobs:
       matrix:
         package:
           - target: x86_64-unknown-linux-musl
-            os: ubuntu-latest
+            runner: ubuntu-latest
             slug: linux-x86_64
           - target: x86_64-pc-windows-gnu
-            os: ubuntu-latest
+            runner: ubuntu-latest
             slug: windows-x86_64
           - target: x86_64-apple-darwin
-            os: macos-latest
+            runner: macos-latest
             slug: darwin-x86_64
           - target: aarch64-apple-darwin
-            os: macos-latest
+            runner: macos-latest
             slug: darwin-aarch64
     runs-on: ${{ matrix.package.runner }}
     steps:
