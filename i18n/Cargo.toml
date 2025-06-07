@@ -15,13 +15,15 @@ include = ["../LICENSE", "**/*.rs", "Cargo.toml"]
 [features]
 default = ["classic"]
 classic = []
-fluent = ["dep:fluent", "unic-langid", "intl-memoizer"]
+fluent = ["dep:fluent", "unic-langid", "intl-memoizer", "dep:fluent-bundle"]
 
 [dependencies]
 once_cell = { workspace = true }
 log = { workspace = true }
 
 fluent = { workspace = true, optional = true }
+fluent-bundle = { workspace = true, optional = true }
+
 unic-langid = { workspace = true, optional = true}
 intl-memoizer = { workspace = true, optional = true}
 

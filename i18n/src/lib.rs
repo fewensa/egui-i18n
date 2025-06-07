@@ -8,9 +8,10 @@ use std::sync::RwLock;
 pub use self::vendor::classic::parse_translations;
 
 #[cfg(feature = "fluent")]
-pub mod fluent {
-  pub use fluent::FluentArgs;
-}
+pub use fluent;
+
+#[cfg(feature = "fluent")]
+pub use fluent_bundle;
 
 mod vendor;
 
