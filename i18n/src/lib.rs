@@ -50,31 +50,36 @@ pub fn languages() -> Vec<String> {
 pub fn load_translations_from_map(
   language: impl AsRef<str>,
   translations: HashMap<String, String>,
+  use_isolating: bool,
 ) -> Result<(), String> {
   let mut translations_contents = vec![];
   for (key, value) in translations.iter() {
     let key = if key.contains("=") { key.replace("=", "\\=") } else { key.to_string() };
     translations_contents.push(format!("{} = {}", key, value));
   }
-  load_translations_from_text(language, translations_contents.join("\n"))
+  load_translations_from_text(language, translations_contents.join("\n"), use_isolating)
 }
 
 #[allow(unreachable_code)]
 pub fn load_translations_from_text(
   language: impl AsRef<str>,
   content: impl AsRef<str>,
+  #[cfg_attr(feature = "classic", allow(unused_variables))] use_isolating: bool,
 ) -> Result<(), String> {
   let language = language.as_ref();
   let content = content.as_ref();
 
   #[cfg(feature = "fluent")]
-  return vendor::fluent::load_translations_from_text(language, content);
+  return vendor::fluent::load_translations_from_text(language, content, use_isolating);
 
   #[cfg(feature = "classic")]
   return vendor::classic::load_translations_from_text(language, content);
 }
 
-pub fn load_translations_from_path(path: impl AsRef<str>) -> Result<(), String> {
+pub fn load_translations_from_path(
+  path: impl AsRef<str>,
+  use_isolating: bool,
+) -> Result<(), String> {
   let path_ref = Path::new(path.as_ref());
   let mut files = vec![];
   if path_ref.is_file() {
@@ -111,7 +116,7 @@ pub fn load_translations_from_path(path: impl AsRef<str>) -> Result<(), String> 
     };
 
     match fs::read_to_string(file) {
-      Ok(content) => load_translations_from_text(name, content)?,
+      Ok(content) => load_translations_from_text(name, content, use_isolating)?,
       Err(e) => return Err(format!("{:?}", e)),
     };
   }

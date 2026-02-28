@@ -25,12 +25,15 @@ fn main() -> eframe::Result {
 }
 
 fn init() {
-  let en_us = String::from_utf8_lossy(include_bytes!("../../../assets/languages/classic/en_US.egl"));
-  let zh_cn = String::from_utf8_lossy(include_bytes!("../../../assets/languages/classic/zh_CN.egl"));
-  let ja_jp = String::from_utf8_lossy(include_bytes!("../../../assets/languages/classic/ja_JP.egl"));
-  egui_i18n::load_translations_from_text("en_US", en_us).unwrap();
-  egui_i18n::load_translations_from_text("zh_CN", zh_cn).unwrap();
-  egui_i18n::load_translations_from_text("ja_JP", ja_jp).unwrap();
+  let en_us =
+    String::from_utf8_lossy(include_bytes!("../../../assets/languages/classic/en_US.egl"));
+  let zh_cn =
+    String::from_utf8_lossy(include_bytes!("../../../assets/languages/classic/zh_CN.egl"));
+  let ja_jp =
+    String::from_utf8_lossy(include_bytes!("../../../assets/languages/classic/ja_JP.egl"));
+  egui_i18n::load_translations_from_text("en_US", en_us, true).unwrap();
+  egui_i18n::load_translations_from_text("zh_CN", zh_cn, true).unwrap();
+  egui_i18n::load_translations_from_text("ja_JP", ja_jp, true).unwrap();
 
   egui_i18n::set_language("en_US");
   egui_i18n::set_fallback("en_US");

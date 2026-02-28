@@ -31,9 +31,9 @@ fn init() {
     String::from_utf8_lossy(include_bytes!("../../../assets/languages/fluent/zh-Hans.ftl"));
   let ja_jp =
     String::from_utf8_lossy(include_bytes!("../../../assets/languages/fluent/ja-JP.ftl"));
-  egui_i18n::load_translations_from_text("en-US", en_us).unwrap();
-  egui_i18n::load_translations_from_text("zh-Hans", zh_cn).unwrap();
-  egui_i18n::load_translations_from_text("ja-JP", ja_jp).unwrap();
+  egui_i18n::load_translations_from_text("en-US", en_us, true).unwrap();
+  egui_i18n::load_translations_from_text("zh-Hans", zh_cn, true).unwrap();
+  egui_i18n::load_translations_from_text("ja-JP", ja_jp, true).unwrap();
 
   // 设置初始语言
   egui_i18n::set_language("en-US");
