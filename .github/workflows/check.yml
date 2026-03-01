@@ -1,4 +1,4 @@
-name: 'Check'
+name: "Check"
 
 on:
   push:
@@ -9,12 +9,11 @@ on:
       - main
 
 jobs:
-
   check:
     name: Check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup Rust
         uses: actions-rust-lang/setup-rust-toolchain@v1
