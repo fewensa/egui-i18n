@@ -18,10 +18,10 @@ Supports two independent translation backends selectable via Cargo features:
 ```toml
 [dependencies]
 # Classic key-value backend (default)
-egui-i18n = "0.1"
+egui-i18n = "0.2"
 
 # Fluent backend
-egui-i18n = { version = "0.1", features = ["fluent"] }
+egui-i18n = { version = "0.2", features = ["fluent"] }
 ```
 
 > The two features are mutually exclusive. Enabling `fluent` disables `classic`.
