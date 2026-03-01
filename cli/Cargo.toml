@@ -17,8 +17,9 @@ publish = false
 color-eyre = { workspace = true }
 structopt = { workspace = true, features = ["paw"] }
 paw = { workspace = true }
+log = { workspace = true }
 
-egui-i18n = { workspace = true }
+egui-i18n = { workspace = true, default-features = false, features = ["classic"] }
 syn = { workspace = true }
 quote = { workspace = true }
 proc-macro2 = { workspace = true }

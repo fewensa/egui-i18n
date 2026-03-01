@@ -1005,6 +1005,7 @@ version = "0.1.2"
 dependencies = [
  "color-eyre",
  "egui-i18n",
+ "log",
  "paw",
  "proc-macro2",
  "quote",

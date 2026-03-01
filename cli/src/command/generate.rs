@@ -38,11 +38,11 @@ impl Generator {
     for entry in fs::read_dir(dir).unwrap() {
       let path = entry.unwrap().path();
       if path.is_dir() {
+        // Skip the Cargo build output directory regardless of platform.
+        if path.components().any(|c| c.as_os_str() == "target") {
+          continue;
+        }
         self.visit_dir(&path, extensions, visitor);
-        continue;
-      }
-      let path_text = path.to_string_lossy().to_string();
-      if path_text.contains("/target/") {
         continue;
       }
       let allow = if let Some(ext) = path.extension() {
@@ -60,15 +60,18 @@ impl Generator {
   }
 
   fn visit_file(&self, file: &Path, visitor: &mut TranslationVisitor) {
-    let content = fs::read_to_string(file).unwrap_or_else(|_| panic!("Failed to read file: {:?}", file));
-    let syntax = syn::parse_file(&content).unwrap_or_else(|_| panic!("Failed to parse file: {:?}", file));
+    let content =
+      fs::read_to_string(file).unwrap_or_else(|_| panic!("Failed to read file: {:?}", file));
+    let syntax =
+      syn::parse_file(&content).unwrap_or_else(|_| panic!("Failed to parse file: {:?}", file));
     visitor.visit_file(&syntax);
   }
 }
 
 impl Generator {
   fn write_language(&self, translations: Vec<String>) -> color_eyre::Result<()> {
-    println!("{:?}", translations);
+    log::debug!("collected translation keys: {:?}", translations);
+
     let mut languages = self.opts.languages.clone();
     if languages.is_empty() {
       languages.push("en_US".to_string());
@@ -95,7 +98,6 @@ impl Generator {
       } else {
         vec![]
       };
-      // println!("stored translations: {:?}", stored_translations);
       let mut contents = vec![];
       let is_default = match &self.opts.default_language {
         Some(v) => v == language,
@@ -105,7 +107,7 @@ impl Generator {
         if stored_translations.contains(t) {
           continue;
         }
-        let key = t.replace("=", "\\=");
+        let key = t.replace('=', "\\=");
         if is_default {
           contents.push(format!("{} = {}", key, t));
         } else {
@@ -120,7 +122,7 @@ impl Generator {
 
       let mut file = OpenOptions::new().append(true).create(true).open(&language_path)?;
       file.write_all(contents.join("\n").as_bytes())?;
-      println!("write transation to: {}", language_path.to_string_lossy());
+      println!("write translation to: {}", language_path.to_string_lossy());
     }
     Ok(())
   }

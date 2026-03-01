@@ -54,7 +54,6 @@ pub fn translate(
   let language = if language.is_empty() { fallback_language } else { language };
 
   let mut translated = extract_translate(language, key, args);
-
   if translated.is_empty() {
     translated = extract_translate(fallback_language, key, args);
   }
