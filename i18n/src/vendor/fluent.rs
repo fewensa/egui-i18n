@@ -11,7 +11,11 @@ type SharedFluentBundle = Arc<FluentBundle<FluentResource, IntlLangMemoizer>>;
 static TRANSLATIONS: Lazy<RwLock<HashMap<String, SharedFluentBundle>>> =
   Lazy::new(|| RwLock::new(HashMap::new()));
 
-pub fn load_translations_from_text(language: impl AsRef<str>, content: impl AsRef<str>) -> Result<(), String> {
+pub fn load_translations_from_text(
+  language: impl AsRef<str>,
+  content: impl AsRef<str>,
+  use_isolating: bool,
+) -> Result<(), String> {
   let resource = match FluentResource::try_new(content.as_ref().to_string()) {
     Ok(v) => v,
     Err(e) => {
@@ -30,6 +34,7 @@ pub fn load_translations_from_text(language: impl AsRef<str>, content: impl AsRe
   if let Err(e) = bundle.add_resource(resource) {
     return Err(format!("{:?}", e));
   }
+  bundle.set_use_isolating(use_isolating);
   let mut translations_map = TRANSLATIONS.write().unwrap();
   translations_map.insert(language_ref.to_string(), Arc::new(bundle));
   Ok(())
@@ -75,4 +80,3 @@ pub fn languages() -> Vec<String> {
   let translations = TRANSLATIONS.read().unwrap();
   translations.keys().cloned().collect()
 }
-

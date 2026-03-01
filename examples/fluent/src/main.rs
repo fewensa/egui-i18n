@@ -25,12 +25,16 @@ fn main() -> eframe::Result {
 }
 
 fn init() {
-  let en_us =
-    String::from_utf8_lossy(include_bytes!("../../../assets/languages/fluent/en-US.ftl"));
+  // Disable Unicode directionality isolation marks (U+2068 FSI / U+2069 PDI).
+  // On Windows these characters are not rendered transparently and appear as
+  // visible garbage in native text contexts. Safe to leave enabled on other platforms.
+  #[cfg(target_os = "windows")]
+  egui_i18n::set_use_isolating(false);
+
+  let en_us = String::from_utf8_lossy(include_bytes!("../../../assets/languages/fluent/en-US.ftl"));
   let zh_cn =
     String::from_utf8_lossy(include_bytes!("../../../assets/languages/fluent/zh-Hans.ftl"));
-  let ja_jp =
-    String::from_utf8_lossy(include_bytes!("../../../assets/languages/fluent/ja-JP.ftl"));
+  let ja_jp = String::from_utf8_lossy(include_bytes!("../../../assets/languages/fluent/ja-JP.ftl"));
   egui_i18n::load_translations_from_text("en-US", en_us).unwrap();
   egui_i18n::load_translations_from_text("zh-Hans", zh_cn).unwrap();
   egui_i18n::load_translations_from_text("ja-JP", ja_jp).unwrap();

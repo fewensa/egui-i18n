@@ -19,6 +19,9 @@ mod vendor;
 static CURRENT_LANGUAGE: Lazy<RwLock<String>> = Lazy::new(|| RwLock::new(String::default()));
 static FALLBACK_LANGUAGE: Lazy<RwLock<String>> = Lazy::new(|| RwLock::new(String::default()));
 
+#[cfg(feature = "fluent")]
+static USE_ISOLATING: Lazy<RwLock<bool>> = Lazy::new(|| RwLock::new(true));
+
 pub fn set_language(locale: &str) {
   let mut current_locale = CURRENT_LANGUAGE.write().unwrap();
   *current_locale = locale.to_string();
@@ -37,6 +40,16 @@ pub fn set_fallback(locale: &str) {
 pub fn get_fallback() -> String {
   let current_locale = FALLBACK_LANGUAGE.read().unwrap();
   current_locale.clone()
+}
+
+#[cfg(feature = "fluent")]
+pub fn set_use_isolating(value: bool) {
+  *USE_ISOLATING.write().unwrap() = value;
+}
+
+#[cfg(feature = "fluent")]
+pub fn get_use_isolating() -> bool {
+  *USE_ISOLATING.read().unwrap()
 }
 
 #[allow(unreachable_code)]
@@ -68,7 +81,7 @@ pub fn load_translations_from_text(
   let content = content.as_ref();
 
   #[cfg(feature = "fluent")]
-  return vendor::fluent::load_translations_from_text(language, content);
+  return vendor::fluent::load_translations_from_text(language, content, get_use_isolating());
 
   #[cfg(feature = "classic")]
   return vendor::classic::load_translations_from_text(language, content);
