@@ -1,58 +1,67 @@
 # egui-i18n
 
-**`egui-i18n`** is an internationalization (i18n) library for [egui](https://github.com/emilk/egui), offering seamless multi-language support. It supports both [Fluent](https://projectfluent.org/) and traditional key-value translation formats, with features like dynamic parameter interpolation, language fallback, and high-performance resource loading — ideal for Rust-based GUI applications.
+An internationalization (i18n) library for [egui](https://github.com/emilk/egui), providing
+runtime language switching, dynamic parameter interpolation, and a language fallback chain —
+without any modifications to egui's source code.
+
+Supports two independent translation backends selectable via Cargo features:
+
+| Feature | Backend | File format |
+|---------|---------|-------------|
+| `classic` *(default)* | Key-value pairs | `.egl` / `.properties` |
+| `fluent` | [Mozilla Fluent](https://projectfluent.org/) | `.ftl` |
 
 ---
 
-## 🚀 Quick Start
+## Installation
 
-Check out the example projects to see how to use `egui-i18n` in practice:
+```toml
+[dependencies]
+# Classic key-value backend (default)
+egui-i18n = "0.1"
 
-- 📄 [`classic`](./examples/classic/) – Example using the classic key-value format.
-- 📄 [`fluent`](./examples/fluent/) – Example using Fluent's advanced syntax.
+# Fluent backend
+egui-i18n = { version = "0.1", features = ["fluent"] }
+```
 
----
-
-## 📚 Documentation Overview (See [i18n/README.md](./i18n/README.md) for full details)
-
-The documentation covers the following:
-
-- **Features**
-
-  - Support for both Fluent and classic key-value translation formats.
-  - Dynamic parameter interpolation (e.g., names, numbers).
-  - Flexible resource loading (with language fallback and caching).
-  - Optimized for real-time UI performance.
-
-- **Installation**
-
-  - How to add `egui-i18n` to your project.
-
-- **Usage**
-
-  - How to load `.ftl` or `.properties` translation files.
-  - How to use the `tr!` macro for translation.
-
-- **Configuration**
-
-  - Cargo features supported: `fluent` / `classic`.
-
-- **Translation Resource Examples**
-
-  - Sample formats for both Fluent and key-value resources.
-
-- **Dependencies & Integration**
-
-  - Core dependencies and optional crates explained.
-
-- **Contribution Guide**
-
-  - How to contribute code, file issues, or submit PRs.
-
-📖 **Read the full guide**: [i18n/README.md](./i18n/README.md)
+> The two features are mutually exclusive. Enabling `fluent` disables `classic`.
 
 ---
 
-## 📄 License
+## Examples
 
-This project is open-sourced under the [MIT License](LICENSE). Contributions are welcome!
+Two fully runnable example applications are included:
+
+| Example | Command |
+|---------|---------|
+| Classic backend | `cargo run -p egui-i18n-example-classic` |
+| Fluent backend  | `cargo run -p egui-i18n-example-fluent`  |
+
+Both examples demonstrate runtime language switching via on-screen buttons and dynamic
+argument interpolation.
+
+---
+
+## Documentation
+
+Full API reference, translation file format details, CLI tool usage, and integration
+guides are in [i18n/README.md](./i18n/README.md).
+
+---
+
+## Project layout
+
+```
+egui-i18n/
+├── i18n/          # Library crate (egui-i18n)
+├── cli/           # CLI tool (egui-i18n-cli)
+└── examples/
+    ├── classic/   # Example using the classic key-value backend
+    └── fluent/    # Example using the Fluent backend
+```
+
+---
+
+## License
+
+This project is licensed under the [MIT License](i18n/LICENSE).

@@ -1,111 +1,305 @@
 # egui-i18n
 
-**`egui-i18n`** is an internationalization (i18n) solution designed specifically for the [egui](https://github.com/emilk/egui) framework. It supports both [Fluent](https://projectfluent.org/) syntax and traditional key-value translation formats. With flexible resource loading, dynamic parameter interpolation, and performance optimizations, it helps developers easily implement multi-language support in their applications.
+An internationalization (i18n) library for [egui](https://github.com/emilk/egui), providing
+runtime language switching, dynamic parameter interpolation, and a language fallback chain —
+without any modifications to egui's source code.
+
+Supports two independent translation backends selectable via Cargo features:
+
+| Feature | Backend | File format |
+|---------|---------|-------------|
+| `classic` *(default)* | Key-value pairs | `.egl` / `.properties` |
+| `fluent` | [Mozilla Fluent](https://projectfluent.org/) | `.ftl` |
 
 ---
 
-## 🛠 Project Origin
-
-`egui-i18n` originated from a [proposal to add i18n support](https://github.com/emilk/egui/pull/5403) in the official `egui` repository. Since `egui` does not currently include a built-in i18n system, this project was developed independently to fulfill real-world needs without modifying `egui`'s core. The goals include:
-
-- Provide multi-language support **without modifying egui's source code**.
-- Support both **Fluent** and **classic key-value** translation formats.
-- Enable **runtime language switching and dynamic parameter interpolation**.
-- Deliver high performance and flexibility for **Rust-based GUI applications**.
-
----
-
-## ✨ Features
-
-### 🗣 Multi-language Support
-
-- **[Fluent](https://projectfluent.org/)**: Ideal for complex linguistic structures.
-- **Classic key-value format**: Suitable for simple and straightforward translations.
-
-### 🔄 Dynamic Parameter Interpolation
-
-- Easily insert dynamic values (e.g. names, dates, numbers) into translation strings.
-
-### 📂 Flexible Resource Loading
-
-- Load `.ftl` (Fluent) or `.properties` (key-value) files from specified file paths.
-- Language fallback support (e.g. fallback from `zh-HK` to `zh`).
-
-### ⚡ High Performance
-
-- Built-in caching system to speed up parsing and lookup of translation resources, suitable for real-time UI rendering.
-
----
-
-## 📦 Installation
-
-Add the dependency in your `Cargo.toml`:
+## Installation
 
 ```toml
 [dependencies]
+# Classic key-value backend (default)
 egui-i18n = "0.1"
-```
 
----
-
-## 🚀 Getting Started
-
-### Using Fluent Translations
-
-```toml
-[dependencies]
+# Fluent backend
 egui-i18n = { version = "0.1", features = ["fluent"] }
 ```
 
+> The two features are mutually exclusive. Enabling `fluent` disables `classic`.
+
+---
+
+## Quick Start
+
+### Classic backend
+
+**Translation file** (`assets/en-US.egl`):
+
+```
+# Lines beginning with # are comments and are ignored.
+welcome = Welcome to the app!
+hello-name = Hello, {name}!
+intro = My name is {name} and I am {age} years old.
+
+# Keys that contain a literal = must escape it with \=
+Hello\=, {name}! = Hello=, {name}!
+```
+
+**Rust code**:
+
 ```rust
 use egui_i18n::tr;
 
-fn main() {
-  let greeting = tr!("greeting", { name: "Alice" });
-  println!("{}", greeting); // Output: Hello, Alice!
+fn init() {
+    let en = include_str!("../assets/en-US.egl");
+    let zh = include_str!("../assets/zh-CN.egl");
+
+    egui_i18n::load_translations_from_text("en-US", en).unwrap();
+    egui_i18n::load_translations_from_text("zh-CN", zh).unwrap();
+
+    egui_i18n::set_language("en-US");
+    egui_i18n::set_fallback("en-US");
 }
-```
 
-Fluent resource file example (`en-US.ftl`):
-
-```
-greeting = Hello, { $name }!
+// Inside your egui update loop:
+ui.label(tr!("welcome"));
+ui.label(tr!("hello-name", { name: &self.name }));
+ui.label(tr!("intro", { name: &self.name, age: self.age }));
 ```
 
 ---
 
-### Using Classic Key-Value Translations
+### Fluent backend
+
+**Translation file** (`assets/en-US.ftl`):
+
+```fluent
+welcome = Welcome to the app!
+hello-name = Hello, { $name }!
+item-count =
+    { $count ->
+        [one] One item
+       *[other] { $count } items
+    }
+```
+
+**Rust code**:
 
 ```rust
 use egui_i18n::tr;
 
-fn main() {
-  let greeting = tr!("classic_greeting");
-  println!("{}", greeting); // Output: Hello, world!
+fn init() {
+    // On Windows, Fluent wraps placeables in Unicode directionality marks
+    // (U+2068 / U+2069) that some native text renderers display as garbage.
+    // Disable them before loading any bundles.
+    #[cfg(target_os = "windows")]
+    egui_i18n::set_use_isolating(false);
+
+    let en = include_str!("../assets/en-US.ftl");
+    let zh = include_str!("../assets/zh-Hans.ftl");
+
+    egui_i18n::load_translations_from_text("en-US", en).unwrap();
+    egui_i18n::load_translations_from_text("zh-Hans", zh).unwrap();
+
+    egui_i18n::set_language("en-US");
+    egui_i18n::set_fallback("en-US");
 }
-```
 
-Classic key-value resource example:
-
-```
-classic_greeting = Hello, world!
+// Inside your egui update loop:
+ui.label(tr!("welcome"));
+ui.label(tr!("hello-name", { name: &self.name }));
+ui.label(tr!("item-count", { count: self.count }));
 ```
 
 ---
 
-## ⚙️ Configuration Options
+## API Reference
 
-### Cargo Features
+### Language configuration
 
-- `fluent`: Enables Fluent translation mode.
-- `classic`: Enables classic key-value translation mode (enabled by default).
+```rust
+// Set the active display language.
+egui_i18n::set_language("zh-Hans");
+
+// Get the currently active language identifier.
+let lang: String = egui_i18n::get_language();
+
+// Set the fallback language used when a key is missing in the active language.
+egui_i18n::set_fallback("en-US");
+
+// Get the current fallback language identifier.
+let fallback: String = egui_i18n::get_fallback();
+
+// Return all language identifiers that have been loaded.
+let langs: Vec<String> = egui_i18n::languages();
+```
+
+### Loading translations
+
+```rust
+// Load from an in-memory string (the most common approach with include_str!).
+egui_i18n::load_translations_from_text("en-US", content)?;
+
+// Load from a HashMap<String, String> — classic backend only.
+// Returns Err in fluent mode.
+egui_i18n::load_translations_from_map("en-US", map)?;
+
+// Scan a directory and load every .egl / .ftl file found.
+// Each file's stem is used as the language identifier.
+egui_i18n::load_translations_from_path("/path/to/i18n/")?;
+```
+
+### Translating
+
+```rust
+// No arguments.
+let s: String = tr!("welcome");
+
+// One or more named arguments.
+let s: String = tr!("hello-name", { name: &self.name });
+let s: String = tr!("intro", { name: &self.name, age: self.age });
+```
+
+### Fluent-only options
+
+```rust
+// Control whether Fluent wraps placeables in Unicode directionality marks.
+// Default: true. Set to false before loading bundles to suppress the marks.
+egui_i18n::set_use_isolating(false);
+
+// Query the current setting.
+let isolating: bool = egui_i18n::get_use_isolating();
+```
 
 ---
 
-## 📄 License
+## Translation file format
 
-This project is open source under the [MIT License](https://opensource.org/licenses/MIT). Contributions and feedback are welcome!
+### Classic (`.egl`)
+
+```
+# Comment — this line is ignored entirely.
+key = value
+hello-name = Hello, {name}!
+
+# Multi-line values: lines without = are appended to the previous key.
+long-text = Line one
+continues here
+still the same value
+
+# Keys containing a literal = must escape it with \=
+A\=B = A equals B
+```
+
+Rules:
+- Lines starting with `#` are comments.
+- Both Unix (`LF`) and Windows (`CRLF`) line endings are supported.
+- Leading and trailing whitespace around keys and values is trimmed.
+- Placeholders use `{name}` syntax and are replaced at runtime.
+
+### Fluent (`.ftl`)
+
+Fluent is a fully-featured localization system. See the
+[Fluent syntax guide](https://projectfluent.org/fluent/guide/) for the complete reference.
+Key capabilities used here include:
+
+- Named arguments: `{ $name }`
+- Plural selectors: `{ $count -> [one] … *[other] … }`
+- Exact number matching: `{ $n -> [0] Zero [1] One *[other] … }`
 
 ---
 
-For more examples, API documentation, or integration guides, check the project source code and the [`examples`](https://github.com/fewensa/egui-i18n/tree/main/examples) directory. If you encounter any issues or have suggestions, feel free to open an issue or submit a PR!
+## Fallback behaviour
+
+When a translation key is looked up:
+
+1. The active language (`set_language`) is searched first.
+2. If the key is not found (or the language was never loaded), the fallback language
+   (`set_fallback`) is tried.
+3. If neither contains the key, an empty string is returned.
+
+```rust
+egui_i18n::set_language("ja-JP");   // primary
+egui_i18n::set_fallback("en-US");   // used when primary is missing a key
+```
+
+> **Important**: call all configuration functions (`set_language`, `set_fallback`,
+> `set_use_isolating`) *before* loading any translation bundles, so that each bundle
+> is constructed with the correct settings.
+
+---
+
+## Loading from the filesystem
+
+`load_translations_from_path` accepts either a file path or a directory path.
+
+```rust
+// Load a single file — its stem becomes the language identifier.
+egui_i18n::load_translations_from_path("i18n/en-US.ftl")?;
+
+// Load all .egl / .ftl files in a directory.
+egui_i18n::load_translations_from_path("i18n/")?;
+// This is equivalent to loading i18n/en-US.ftl → "en-US",
+//                                  i18n/zh-Hans.ftl → "zh-Hans", etc.
+```
+
+---
+
+## CLI tool
+
+The companion `egui-i18n-cli` tool scans Rust source files for `tr!(...)` macro calls,
+extracts the translation keys, and generates or updates translation files with stubs for
+any newly discovered keys.
+
+```
+egui-i18n-cli generate \
+    --source-path ./src \
+    --output-path ./i18n \
+    --language en-US \
+    --language zh-Hans \
+    --default-language en-US \
+    --ext egl
+```
+
+| Option | Description |
+|--------|-------------|
+| `--source-path` | Root directory to scan for `.rs` files |
+| `--output-path` | Directory where translation files are written (default: current directory) |
+| `--extension` | Additional file extensions to scan (default: `rs`) |
+| `--language` | Language identifiers to generate files for (default: `en_US`) |
+| `--default-language` | When set, newly found keys in this language are pre-filled with the key itself as the value |
+| `--ext` | Output file extension: `egl` or `ftl` (default: `tgl`) |
+
+Running the command again is safe — existing translations are preserved and only new keys
+are appended.
+
+---
+
+## Examples
+
+Two fully runnable example applications are included:
+
+| Example | Command |
+|---------|---------|
+| Classic backend | `cargo run -p egui-i18n-example-classic` |
+| Fluent backend | `cargo run -p egui-i18n-example-fluent` |
+
+Both examples demonstrate runtime language switching via on-screen buttons and
+dynamic argument interpolation.
+
+---
+
+## Feature flags
+
+| Feature | Description | Default |
+|---------|-------------|---------|
+| `classic` | Enable the key-value translation backend | ✅ yes |
+| `fluent` | Enable the Mozilla Fluent translation backend | ❌ no |
+
+The two features are mutually exclusive. If `fluent` is enabled, `classic` is
+automatically disabled.
+
+---
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
