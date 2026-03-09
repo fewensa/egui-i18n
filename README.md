@@ -64,4 +64,4 @@ egui-i18n/
 
 ## License
 
-This project is licensed under the [MIT License](i18n/LICENSE).
+This project is licensed under the [MIT License](LICENSE).
