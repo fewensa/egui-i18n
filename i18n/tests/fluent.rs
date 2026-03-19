@@ -332,7 +332,9 @@ fn test_tr_macro_with_multiple_args() {
 
 #[test]
 fn test_languages_contains_loaded() {
-  load_no_iso("hu-HU", "k = v");
+  // This test only checks registry enumeration, so keep it parallel-safe by
+  // avoiding the global `use_isolating` toggle used by `load_no_iso`.
+  load("hu-HU", "k = v");
   assert!(egui_i18n::languages().contains(&"hu-HU".to_string()));
 }
 
