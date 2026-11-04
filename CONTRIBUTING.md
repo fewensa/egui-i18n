@@ -42,7 +42,7 @@ Fluent backend.
   and a changelog entry.
 - Format with `cargo fmt` before pushing. CI uses stable rustfmt.
 - Add or update tests when behavior changes.
-- Do not commit secrets. crates.io publishing uses the `CARGO_REGISTRY_TOKEN`
+- Do not commit secrets. crates.io publishing uses the `TOKEN_CRATES_IO`
   GitHub Actions secret and is not run from pull requests.
 
 ## Security

@@ -76,7 +76,7 @@ jobs:
 
       - name: Publish egui-i18n
         env:
-          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+          CARGO_REGISTRY_TOKEN: ${{ secrets.TOKEN_CRATES_IO }}
         run: cargo publish -p egui-i18n --locked
 
   publish-github-release:
