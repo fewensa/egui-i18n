@@ -31,10 +31,9 @@ fn init() {
   #[cfg(target_os = "windows")]
   egui_i18n::set_use_isolating(false);
 
-  let en_us = String::from_utf8_lossy(include_bytes!("../../../assets/languages/fluent/en-US.ftl"));
-  let zh_cn =
-    String::from_utf8_lossy(include_bytes!("../../../assets/languages/fluent/zh-Hans.ftl"));
-  let ja_jp = String::from_utf8_lossy(include_bytes!("../../../assets/languages/fluent/ja-JP.ftl"));
+  let en_us = String::from_utf8_lossy(include_bytes!("../assets/en-US.ftl"));
+  let zh_cn = String::from_utf8_lossy(include_bytes!("../assets/zh-Hans.ftl"));
+  let ja_jp = String::from_utf8_lossy(include_bytes!("../assets/ja-JP.ftl"));
   egui_i18n::load_translations_from_text("en-US", en_us).unwrap();
   egui_i18n::load_translations_from_text("zh-Hans", zh_cn).unwrap();
   egui_i18n::load_translations_from_text("ja-JP", ja_jp).unwrap();
@@ -56,8 +55,8 @@ impl Default for MyApp {
 }
 
 impl eframe::App for MyApp {
-  fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
-    egui::CentralPanel::default().show(ctx, |ui| {
+  fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
+    egui::CentralPanel::default().show(ui, |ui| {
       ui.heading("My egui Application");
       ui.horizontal(|ui| {
         let name_label = ui.label("Your name: ");
@@ -84,7 +83,7 @@ impl eframe::App for MyApp {
         name: &self.name, age: self.age
       }));
 
-      ui.image(egui::include_image!("../../../assets/images/ferris.png"));
+      ui.image(egui::include_image!("../assets/ferris.png"));
     });
   }
 }

@@ -1,15 +1,13 @@
 name: Release
 
 on:
-  # pull_request:
-  #   branches: [main]
   workflow_dispatch:
   push:
     tags:
       - "v*"
 
-env:
-  DOCKER_REGISTRY: ghcr.io
+permissions:
+  contents: read
 
 jobs:
   build-egui-i18n:
@@ -69,24 +67,23 @@ jobs:
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/v')
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup Rust
         uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
           toolchain: stable
 
-      - name: Package
-        working-directory: i18n
-        run: cargo package
-
-      - name: Publish crate
-        working-directory: i18n
-        run: cargo publish --token ${{ secrets.TOKEN_CRATES_IO }}
+      - name: Publish egui-i18n
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+        run: cargo publish -p egui-i18n --locked
 
   publish-github-release:
     name: Publish GitHub Release
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     needs:
       - build-egui-i18n
       - publish-crate

@@ -1,47 +1,45 @@
-use structopt::{clap::arg_enum, StructOpt};
+use clap::{Args, Parser, Subcommand, ValueEnum};
 
-#[derive(Clone, Debug, StructOpt)]
-#[structopt(name = "egui-i18n", about = "egui-i18n-cli")]
+#[derive(Clone, Debug, Parser)]
+#[command(name = "egui-i18n", about = "egui-i18n-cli")]
 pub struct Opt {
-  #[structopt(subcommand)]
+  #[command(subcommand)]
   pub cmd: Command,
 }
 
-#[derive(Clone, Debug, StructOpt)]
+#[derive(Clone, Debug, Subcommand)]
 pub enum Command {
   /// generate
   Generate {
-    #[structopt(flatten)]
+    #[command(flatten)]
     opts: GenerateOpts,
   },
 }
 
-#[derive(Clone, Debug, StructOpt)]
+#[derive(Clone, Debug, Args)]
 pub struct GenerateOpts {
   /// Source path to find i18n key files
-  #[structopt(long)]
+  #[arg(long)]
   pub source_path: String,
   /// Output path to write the generated language files
-  #[structopt(long)]
+  #[arg(long)]
   pub output_path: Option<String>,
   /// Allowed file extensions to search for i18n keys, default only `rs` files
-  #[structopt(long = "extension")]
+  #[arg(long = "extension")]
   pub extensions: Vec<String>,
   /// Languages to generate, default only `en_US`
-  #[structopt(long = "language")]
+  #[arg(long = "language")]
   pub languages: Vec<String>,
-  // Set default language
-  #[structopt(long)]
+  /// Set default language
+  #[arg(long)]
   pub default_language: Option<String>,
   /// Language extension to use, default is `tgl`
-  #[structopt(long)]
+  #[arg(long, value_enum, ignore_case = true)]
   pub ext: Option<LanguageExt>,
 }
 
-arg_enum! {
-  #[derive(Clone, Debug)]
-  pub enum LanguageExt {
-    Egl,
-    Ftl,
-  }
+#[derive(Clone, Debug, ValueEnum)]
+pub enum LanguageExt {
+  Egl,
+  Ftl,
 }

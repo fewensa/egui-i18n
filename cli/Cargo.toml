@@ -2,21 +2,19 @@
 name = "egui-i18n-cli"
 version.workspace = true
 authors.workspace = true
-description.workspace = true
+description = "Command-line helper that extracts egui-i18n tr! keys into translation files"
 edition.workspace = true
 homepage.workspace = true
 license.workspace = true
-readme.workspace = true
+readme = "README.md"
 repository.workspace = true
-include.workspace = true
-categories = ["gui"]
-keywords = ["gui", "immediate", "portable"]
-publish = false
+categories = ["command-line-utilities", "internationalization"]
+keywords = ["egui", "i18n", "localization", "cli", "fluent"]
+rust-version = "1.85"
 
 [dependencies]
 color-eyre = { workspace = true }
-structopt = { workspace = true, features = ["paw"] }
-paw = { workspace = true }
+clap = { workspace = true }
 log = { workspace = true }
 
 egui-i18n = { workspace = true, default-features = false, features = ["classic"] }

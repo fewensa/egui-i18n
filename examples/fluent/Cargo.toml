@@ -2,22 +2,22 @@
 name = "egui-i18n-example-fluent"
 version.workspace = true
 authors.workspace = true
-description.workspace = true
+description = "Example egui application using the egui-i18n Fluent backend"
 edition.workspace = true
 homepage.workspace = true
 license.workspace = true
 repository.workspace = true
-include.workspace = true
-publish = false
+readme = "README.md"
+rust-version = "1.95"
 
 [dependencies]
-eframe = "0.31"
+eframe = "0.37"
 
 egui-i18n = { workspace = true, features = ["fluent"] }
 
 # For image support:
-egui_extras = { version = "0.31", features = ["default", "image"] }
+egui_extras = { version = "0.37", features = ["default", "image"] }
 env_logger = { version = "0.11", default-features = false, features = [
-    "auto-color",
-    "humantime",
+  "auto-color",
+  "humantime",
 ] }
