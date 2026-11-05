@@ -1020,7 +1020,7 @@ dependencies = [
 
 [[package]]
 name = "egui-i18n"
-version = "0.2.1"
+version = "0.2.2"
 dependencies = [
  "fluent",
  "fluent-bundle",
@@ -1032,7 +1032,7 @@ dependencies = [
 
 [[package]]
 name = "egui-i18n-cli"
-version = "0.2.1"
+version = "0.2.2"
 dependencies = [
  "clap",
  "color-eyre",
@@ -1045,7 +1045,7 @@ dependencies = [
 
 [[package]]
 name = "egui-i18n-example-classic"
-version = "0.2.1"
+version = "0.2.2"
 dependencies = [
  "eframe",
  "egui-i18n",
@@ -1055,7 +1055,7 @@ dependencies = [
 
 [[package]]
 name = "egui-i18n-example-fluent"
-version = "0.2.1"
+version = "0.2.2"
 dependencies = [
  "eframe",
  "egui-i18n",

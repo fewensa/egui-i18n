@@ -7,7 +7,7 @@
 | 0.2.x   | Yes       |
 | < 0.2   | No        |
 
-0.2.1 is the current release. It keeps the 0.2 library API and builds the
+0.2.2 is the current release. It keeps the 0.2 library API and builds the
 examples against egui / eframe 0.37.
 
 ## Reporting a vulnerability

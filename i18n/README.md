@@ -15,7 +15,7 @@ Supports two independent translation backends selectable via Cargo features:
 
 | Piece | Version |
 |-------|---------|
-| This crate | 0.2.1 |
+| This crate | 0.2.2 |
 | egui / eframe (examples and `App::ui` snippets) | 0.37 |
 | Rust | 1.77+ for this crate. The eframe 0.37 examples need 1.95+. |
 
@@ -30,10 +30,10 @@ implement `App::ui` instead of the removed `App::update`.
 ```toml
 [dependencies]
 # Classic key-value backend (default)
-egui-i18n = "0.2.1"
+egui-i18n = "0.2.2"
 
 # Fluent backend
-egui-i18n = { version = "0.2.1", features = ["fluent"] }
+egui-i18n = { version = "0.2.2", features = ["fluent"] }
 ```
 
 > The two features are mutually exclusive. Enabling `fluent` disables `classic`.
