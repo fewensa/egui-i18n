@@ -1,11 +1,11 @@
-use structopt::StructOpt;
+use clap::Parser;
 
-mod types;
 mod command;
+mod types;
 
 fn main() -> color_eyre::Result<()> {
   init()?;
-  let opt = types::Opt::from_args();
+  let opt = types::Opt::parse();
   match opt.cmd {
     types::Command::Generate { opts } => command::generate::generate_languages(opts)?,
   };

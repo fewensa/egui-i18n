@@ -1,0 +1,20 @@
+# Transitive informational advisories with no patched crates.io release.
+# They are pulled in by the eframe 0.37 examples, not by the egui-i18n library.
+# Drop an entry when a newer eframe/winit/accesskit no longer depends on it.
+
+[advisories]
+ignore = [
+  # ttf-parser via winit -> sctk-adwaita -> ab_glyph. Unmaintained, no patched
+  # version. skrifa is not a drop-in replacement for this dependency chain.
+  "RUSTSEC-2026-0192",
+  # zvariant, merged into zbus 6. accesskit in eframe 0.37 still uses zbus 5.
+  "RUSTSEC-2026-0370",
+  # zbus_names, same accesskit / zbus 5 chain.
+  "RUSTSEC-2026-0371",
+  # zvariant_derive, same accesskit / zbus 5 chain.
+  "RUSTSEC-2026-0372",
+]
+
+[output]
+deny = ["warnings"]
+quiet = false

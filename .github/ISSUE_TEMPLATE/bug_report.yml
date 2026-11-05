@@ -1,0 +1,45 @@
+name: Bug report
+description: Something in egui-i18n, the CLI, or an example does not work as documented.
+title: "bug: "
+labels: []
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: What happened
+      description: What you expected, and what happened instead.
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - egui-i18n classic
+        - egui-i18n fluent
+        - egui-i18n-cli
+        - example
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Crate version
+      description: The egui-i18n version, or the git commit if you are not using crates.io.
+      placeholder: 0.2.1
+    validations:
+      required: true
+  - type: input
+    id: rust
+    attributes:
+      label: Rust version
+      description: Output of `rustc --version`.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: How to reproduce
+      description: A small snippet, translation file, or command is enough.
+    validations:
+      required: true

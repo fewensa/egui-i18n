@@ -37,7 +37,9 @@ impl Default for Config {
   }
 }
 
-// todo: migrate to egui context
+// Process-global on purpose: this crate does not depend on egui, so the same
+// API works with every egui version. Per-context storage can be added later
+// without pulling egui into the default build.
 static CONFIG: Lazy<RwLock<Config>> = Lazy::new(|| RwLock::new(Config::default()));
 
 // ---------------------------------------------------------------------------

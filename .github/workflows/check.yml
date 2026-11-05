@@ -1,17 +1,29 @@
-name: "Check"
+name: Check
 
 on:
   push:
     branches:
       - main
   pull_request:
-    branches:
-      - main
+
+permissions:
+  contents: read
 
 jobs:
-  # Library: lint + test for each feature permutation
+  fmt:
+    name: rustfmt
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          toolchain: stable
+          components: rustfmt
+      - name: Check formatting
+        run: cargo fmt --all --check
+
   lib:
-    name: "lib (${{ matrix.feature }})"
+    name: lib (${{ matrix.feature }})
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -22,14 +34,14 @@ jobs:
       - uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
           toolchain: stable
+          components: clippy
       - name: Clippy
-        run: cargo clippy -p egui-i18n --features ${{ matrix.feature }} -- -D warnings
+        run: cargo clippy -p egui-i18n --features ${{ matrix.feature }} --all-targets -- -D warnings
       - name: Test
         run: cargo test -p egui-i18n --features ${{ matrix.feature }} --test ${{ matrix.feature }}
 
-  # CLI + examples: lint + check only (no runnable tests)
   packages:
-    name: "check (${{ matrix.package }})"
+    name: check (${{ matrix.package }})
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -43,7 +55,43 @@ jobs:
       - uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
           toolchain: stable
+          components: clippy
       - name: Clippy
-        run: cargo clippy -p ${{ matrix.package }} -- -D warnings
+        run: cargo clippy -p ${{ matrix.package }} --all-targets -- -D warnings
       - name: Check
         run: cargo check -p ${{ matrix.package }}
+
+  wasm:
+    name: wasm (${{ matrix.feature }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - feature: classic
+            args: --features classic
+          - feature: fluent
+            args: --no-default-features --features fluent
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          toolchain: stable
+          target: wasm32-unknown-unknown
+      - name: Check library
+        run: cargo check -p egui-i18n --target wasm32-unknown-unknown ${{ matrix.args }}
+
+  audit:
+    name: cargo audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          toolchain: stable
+      - name: Install cargo-audit
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-audit
+      - name: Audit
+        run: cargo audit

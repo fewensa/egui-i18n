@@ -296,4 +296,3 @@ fn test_languages_contains_loaded() {
 fn test_languages_does_not_contain_unloaded() {
   assert!(!egui_i18n::languages().contains(&"x-cl-never-loaded".to_string()));
 }
-

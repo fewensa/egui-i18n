@@ -7,8 +7,9 @@ edition.workspace = true
 homepage.workspace = true
 license.workspace = true
 repository.workspace = true
-categories = ["gui"]
-keywords = ["gui", "immediate", "portable"]
+categories = ["gui", "internationalization"]
+keywords = ["egui", "i18n", "localization", "translation", "fluent"]
+rust-version = "1.77"
 
 readme = "README.md"
 include = ["**/*.rs", "Cargo.toml", "README.md", "LICENSE"]

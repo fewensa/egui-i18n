@@ -11,6 +11,18 @@ Supports two independent translation backends selectable via Cargo features:
 | `classic` *(default)* | Key-value pairs | `.egl` / `.properties` |
 | `fluent` | [Mozilla Fluent](https://projectfluent.org/) | `.ftl` |
 
+## Compatibility
+
+| Piece | Version |
+|-------|---------|
+| This crate | 0.2.1 |
+| egui / eframe (examples and `App::ui` snippets) | 0.37 |
+| Rust | 1.77+ for this crate. The eframe 0.37 examples need 1.95+. |
+
+`egui-i18n` does not depend on egui. Call it from any egui version. Code that
+embeds the snippets below in an `eframe` app should use eframe 0.37 and
+implement `App::ui` instead of the removed `App::update`.
+
 ---
 
 ## Installation
@@ -18,10 +30,10 @@ Supports two independent translation backends selectable via Cargo features:
 ```toml
 [dependencies]
 # Classic key-value backend (default)
-egui-i18n = "0.2"
+egui-i18n = "0.2.1"
 
 # Fluent backend
-egui-i18n = { version = "0.2", features = ["fluent"] }
+egui-i18n = { version = "0.2.1", features = ["fluent"] }
 ```
 
 > The two features are mutually exclusive. Enabling `fluent` disables `classic`.
@@ -60,7 +72,7 @@ fn init() {
     egui_i18n::set_fallback("en-US");
 }
 
-// Inside your egui update loop:
+// Inside eframe 0.37 `App::ui`:
 ui.label(tr!("welcome"));
 ui.label(tr!("hello-name", { name: &self.name }));
 ui.label(tr!("intro", { name: &self.name, age: self.age }));
@@ -104,7 +116,7 @@ fn init() {
     egui_i18n::set_fallback("en-US");
 }
 
-// Inside your egui update loop:
+// Inside eframe 0.37 `App::ui`:
 ui.label(tr!("welcome"));
 ui.label(tr!("hello-name", { name: &self.name }));
 ui.label(tr!("item-count", { count: self.count }));

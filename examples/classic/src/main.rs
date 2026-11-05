@@ -25,9 +25,9 @@ fn main() -> eframe::Result {
 }
 
 fn init() {
-  let en_us = String::from_utf8_lossy(include_bytes!("../../../assets/languages/classic/en_US.egl"));
-  let zh_cn = String::from_utf8_lossy(include_bytes!("../../../assets/languages/classic/zh_CN.egl"));
-  let ja_jp = String::from_utf8_lossy(include_bytes!("../../../assets/languages/classic/ja_JP.egl"));
+  let en_us = String::from_utf8_lossy(include_bytes!("../assets/en_US.egl"));
+  let zh_cn = String::from_utf8_lossy(include_bytes!("../assets/zh_CN.egl"));
+  let ja_jp = String::from_utf8_lossy(include_bytes!("../assets/ja_JP.egl"));
   egui_i18n::load_translations_from_text("en_US", en_us).unwrap();
   egui_i18n::load_translations_from_text("zh_CN", zh_cn).unwrap();
   egui_i18n::load_translations_from_text("ja_JP", ja_jp).unwrap();
@@ -48,8 +48,8 @@ impl Default for MyApp {
 }
 
 impl eframe::App for MyApp {
-  fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
-    egui::CentralPanel::default().show(ctx, |ui| {
+  fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
+    egui::CentralPanel::default().show(ui, |ui| {
       ui.heading("My egui Application");
       ui.horizontal(|ui| {
         let name_label = ui.label("Your name: ");
@@ -77,7 +77,7 @@ impl eframe::App for MyApp {
         name: &self.name, age: self.age
       }));
 
-      ui.image(egui::include_image!("../../../assets/images/ferris.png"));
+      ui.image(egui::include_image!("../assets/ferris.png"));
     });
   }
 }

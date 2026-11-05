@@ -5,10 +5,12 @@ members = ["cli", "i18n", "examples/*"]
 [workspace.package]
 edition = "2021"
 license = "MIT"
-rust-version = "1.77"
-version = "0.2.0"
+# Full workspace (eframe 0.37 examples) needs Rust 1.95.
+# The egui-i18n library crate pins its own rust-version to 1.77.
+rust-version = "1.95"
+version = "0.2.1"
 authors = ["fewensa <osuni@protonmail.com>"]
-description = "egui i18n"
+description = "Internationalization (i18n) for egui applications"
 readme = "README.md"
 repository = "https://github.com/fewensa/egui-i18n"
 homepage = "https://github.com/fewensa/egui-i18n"
@@ -26,22 +28,18 @@ opt-level = 2 # fast and small wasm, basically same as `opt-level = 's'`
 panic = "abort" # This leads to better optimizations and smaller binaries (and is the default in Wasm anyways).
 
 [workspace.dependencies]
-
 color-eyre = "0.6"
-structopt =  "0.3"
-paw = "1"
+clap = { version = "4.6", features = ["derive"] }
 
 proc-macro2 = "1"
 quote = "1"
-syn = { version = "2", features = ["derive", "parsing", "visit", "full"] }
+syn = { version = "3", features = ["derive", "parsing", "visit", "full"] }
 once_cell = "1"
 log = "0.4"
-
 
 fluent = "0.17"
 fluent-bundle = "0.16"
 unic-langid = "0.9"
 intl-memoizer = "0.5"
-
 
 egui-i18n = { version = "0.2", path = "./i18n", default-features = false }

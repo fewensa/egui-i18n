@@ -11,6 +11,19 @@ Supports two independent translation backends selectable via Cargo features:
 | `classic` *(default)* | Key-value pairs | `.egl` / `.properties` |
 | `fluent` | [Mozilla Fluent](https://projectfluent.org/) | `.ftl` |
 
+## Compatibility
+
+| Piece | Version |
+|-------|---------|
+| `egui-i18n` (this release) | 0.2.1 |
+| egui / eframe / egui_extras (examples) | 0.37 |
+| Rust, library only | 1.77+ |
+| Rust, examples and full workspace | 1.95+ |
+
+The library crate does not link egui, so the translation API works with any egui
+version. The runnable examples, and any app code copied from them, target
+eframe 0.37, whose `App::ui` method replaced `App::update`.
+
 ---
 
 ## Installation
@@ -18,10 +31,10 @@ Supports two independent translation backends selectable via Cargo features:
 ```toml
 [dependencies]
 # Classic key-value backend (default)
-egui-i18n = "0.2"
+egui-i18n = "0.2.1"
 
 # Fluent backend
-egui-i18n = { version = "0.2", features = ["fluent"] }
+egui-i18n = { version = "0.2.1", features = ["fluent"] }
 ```
 
 > The two features are mutually exclusive. Enabling `fluent` disables `classic`.
@@ -65,3 +78,7 @@ egui-i18n/
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
+
+See [CONTRIBUTING.md](CONTRIBUTING.md), [SECURITY.md](SECURITY.md), and
+[CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). Release notes are in
+[CHANGELOG.md](CHANGELOG.md).
