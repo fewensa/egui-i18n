@@ -8,7 +8,7 @@ license = "MIT"
 # Full workspace (eframe 0.37 examples) needs Rust 1.95.
 # The egui-i18n library crate pins its own rust-version to 1.77.
 rust-version = "1.95"
-version = "0.2.1"
+version = "0.2.2"
 authors = ["fewensa <osuni@protonmail.com>"]
 description = "Internationalization (i18n) for egui applications"
 readme = "README.md"

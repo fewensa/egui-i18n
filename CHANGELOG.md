@@ -5,6 +5,34 @@ All notable changes to this project are documented in this file.
 The `egui-i18n` library does not depend on egui. Versions below describe the
 library API and the egui version the examples are written for.
 
+## 0.2.2 - 2026-11-05
+
+### Changed
+
+- GitHub Actions now use `actions/checkout` 7,
+  `actions-rust-lang/setup-rust-toolchain` 2, `softprops/action-gh-release` 3,
+  and `geekyeggo/delete-artifact` 6.
+- Direct dependency requirements are pinned to the newest crates.io releases
+  that still match the current MSRV (library 1.77, CLI 1.85, examples and
+  workspace 1.95). eframe, egui, and egui_extras stay on 0.37.0. These are
+  tighter floors on the same lines already used in 0.2.1, not new major
+  versions.
+- The lockfile moves `winnow` from 1.0.4 to 1.0.5. Other locked crates were
+  already the highest versions their parents allow.
+
+### Compatibility
+
+- Library API (`tr!`, language loading, fallback, Fluent isolating marks) is
+  unchanged from 0.2.1.
+- 0.2.1 is already on crates.io and tagged `v0.2.1`. This patch publishes the
+  dependency pins and Actions updates that landed on `main` after that tag.
+
+### Known
+
+- Tag `v0.2.1` published the crate, then the Windows cross build
+  (`x86_64-pc-windows-gnu` via `cross`) failed and the GitHub Release was
+  skipped. This release does not change that build.
+
 ## 0.2.1 - 2026-11-04
 
 ### Changed
