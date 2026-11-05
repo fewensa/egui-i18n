@@ -103,7 +103,7 @@ jobs:
           (sha256sum * | tee sha256sums.txt)
 
       - name: Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: ./*
 
