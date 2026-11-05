@@ -28,18 +28,18 @@ opt-level = 2 # fast and small wasm, basically same as `opt-level = 's'`
 panic = "abort" # This leads to better optimizations and smaller binaries (and is the default in Wasm anyways).
 
 [workspace.dependencies]
-color-eyre = "0.6"
-clap = { version = "4.6", features = ["derive"] }
+color-eyre = "0.6.5"
+clap = { version = "4.6.7", features = ["derive"] }
 
-proc-macro2 = "1"
-quote = "1"
-syn = { version = "3", features = ["derive", "parsing", "visit", "full"] }
-once_cell = "1"
-log = "0.4"
+proc-macro2 = "1.0.107"
+quote = "1.0.47"
+syn = { version = "3.0.9", features = ["derive", "parsing", "visit", "full"] }
+once_cell = "1.21.4"
+log = "0.4.35"
 
-fluent = "0.17"
-fluent-bundle = "0.16"
-unic-langid = "0.9"
-intl-memoizer = "0.5"
+fluent = "0.17.0"
+fluent-bundle = "0.16.0"
+unic-langid = "0.9.6"
+intl-memoizer = "0.5.3"
 
 egui-i18n = { version = "0.2", path = "./i18n", default-features = false }
